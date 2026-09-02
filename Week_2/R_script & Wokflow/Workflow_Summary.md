@@ -124,4 +124,4 @@ Result: both runs gave checksum `4082f8c881e696eecd3b45f77949c202`. Identical. P
 | bluecatfish_annotation.gtf | cdfaad498c02494354b8698cb0669d48 |
 
 ## GitHub
-GitHub repo: https://github.com/SamLiyan/BIOL-7800-Computational-Biology-Colloquium/tree/main/Assignment_2
+GitHub repo: https://github.com/SamLiyan/BIOL-7800/tree/main/Week_2
