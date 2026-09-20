@@ -1,9 +1,9 @@
-# Bacterial Genome Assembly and Annotation (SKESA + Prokka)
+# Bacterial Genome Assembly and Annotation
 
 ## Background
 Whole-genome sequencing produces raw reads that need to be assembled into
 contigs and then annotated before they are biologically useful. This
-project builds a small, reproducible pipeline that takes public
+assignment builds a small, reproducible pipeline that takes public
 paired-end Illumina reads from *E. coli*, assembles them de novo with
 SKESA, compares the assembly against the reference genome, and annotates
 the assembly with Prokka.
@@ -21,7 +21,7 @@ known reference genome in terms of size and contiguity.
   reads, *E. coli*). The full run is used (1,107,090 read pairs,
   approximately 70x coverage).
 
-No data files are included in this repository. `run_analysis.sh`
+No data files are included in this repository. `main_script.sh`
 downloads everything it needs directly from NCBI/SRA when it runs.
 
 ## Requirements
@@ -31,7 +31,7 @@ downloads everything it needs directly from NCBI/SRA when it runs.
 - Prokka 1.14.6
 - curl
 
-All versions are pinned in `environment.yml`.
+All versions are pinned in `environment_info.yml`.
 
 The script is set to run single-threaded (`--cores 1`, `--cpus 1`) with
 8 GB of RAM as a safe default. Before running, check your own machine's
@@ -44,7 +44,7 @@ Reproducibility Notes below).
 ## Setting Up the Environment
 Create the Conda environment:
 ```
-conda env create -f environment.yml
+conda env create -f environment_info.yml
 ```
 
 Activate it:
@@ -55,7 +55,7 @@ conda activate assembly-annotation
 ## Execution Steps
 Run the full pipeline with:
 ```
-bash run_analysis.sh
+bash main_script.sh
 ```
 
 The script performs the following steps in order:
@@ -89,7 +89,7 @@ output_data/
 ```
 
 Results from the completed run:
-- Assembly: 82 contigs, 4,532,199 bp total length.
+- Assembly: 82 contigs
 - Annotation: 4,188 predicted coding sequences (CDS), 78 tRNAs, 3 rRNAs,
   and 2 CRISPR arrays.
 
@@ -114,27 +114,13 @@ sha256sum -c checksum_values.txt
 ```
 Every listed file should report `OK`.
 
-### Reproducibility Notes
-- `fastq-dump` and SKESA (run single-threaded) are deterministic, so
-  re-running the pipeline produces the same read data and the same
-  assembly content.
-- Prokka stamps its `.gbk`/`.sqn` output files with the current run
-  date (visible in the log as a `tbl2asn` date correction step). This
-  means those specific files would not be byte-identical between runs
-  even on the same machine, although the predicted gene content is the
-  same. This pipeline avoids that issue entirely by deleting those
-  date-stamped files (`.gbk`, `.sqn`, along with the other raw Prokka
-  intermediates) at the end of the run, so only the stable `.gff`,
-  `.txt`, and `.faa`-derived outputs are kept.
-
 ## Folder Layout
 ```
 .
-├── README.md
-├── environment.yml
-├── run_analysis.sh
+├── Readme_file.md
+├── environment_info.yml
+├── main_script.sh
 ├── checksum_values.txt
-├── .gitignore
 └── output_data/
     ├── assembly.fasta
     ├── comparison_stats.tsv
@@ -142,11 +128,3 @@ Every listed file should report `OK`.
     ├── prokka_annotation.gff
     └── prokka_proteins.faa
 ```
-
-`input_data/` and `work/` are excluded from GitHub via `.gitignore`.
-Both directories hold either downloaded input data or raw intermediate
-files that `run_analysis.sh` regenerates automatically, so they don't
-need to be committed. The three Prokka output files actually needed
-downstream (`genome.txt`, `genome.gff`, `genome.faa`) are copied out of
-`work/prokka/` into `output_data/` by the script, and the remaining raw
-Prokka files are deleted by the script's final cleanup step.
