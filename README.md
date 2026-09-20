@@ -3,7 +3,7 @@
 ## Background
 Whole-genome sequencing produces raw reads that need to be assembled into
 contigs and then annotated before they are biologically useful. This
-project builds a small, reproducible pipeline that takes public
+assignment builds a small, reproducible pipeline that takes public
 paired-end Illumina reads from *E. coli*, assembles them de novo with
 SKESA, compares the assembly against the reference genome, and annotates
 the assembly with Prokka.
@@ -21,10 +21,8 @@ known reference genome in terms of size and contiguity.
   reads, *E. coli*). The full run is used (1,107,090 read pairs,
   approximately 70x coverage).
 
-No data files are included in this repository. `run_analysis.sh`
-downloads everything it needs directly from NCBI/SRA when it runs, and
-deletes the downloaded input data again once the pipeline finishes (see
-Execution Steps below).
+No data files are included in this repository. `main_script.sh`
+downloads everything it needs directly from NCBI/SRA when it runs.
 
 ## Requirements
 - SRA Toolkit (fastq-dump) 3.1.1
@@ -43,7 +41,7 @@ The script is set to run with `--cores 8`, `--cpus 8`, and 10 GB of RAM,
 matching a machine with 10 CPUs and 11 GB available (leaving a small
 margin for the OS). Before running, check your own machine's resources
 with `nproc` and `free -h`, and adjust the `--cores`, `--cpus`, and
-`--memory` values in `run_analysis.sh` to match what you actually have
+`--memory` values in `main_script.sh` to match what you actually have
 available. Using more or fewer cores will change runtime, and may also
 change the exact ordering of contigs SKESA produces (see Reproducibility
 Notes below).
@@ -79,9 +77,6 @@ The script performs the following steps in order:
 7. Deletes Prokka's raw intermediate/duplicate files from `work/prokka/`,
    keeping only `genome.txt`, `genome.gff`, `genome.faa`, and
    `genome.tsv`.
-8. Deletes the entire `input_data/` folder, since the checksums for
-   those files were already recorded in step 6 and the script
-   re-downloads everything from scratch on the next run.
 
 On the machine used for this submission (`--cores 8`, `--cpus 8`), the
 full run took approximately **[UPDATE WITH YOUR MEASURED TIME]**.
@@ -99,14 +94,12 @@ output_data/
 
 Results from the completed run:
 - Assembly: 82 contigs, 4,532,199 bp total length (reference genome is
-  4,641,652 bp — about 97.6% recovered), GC content 50.73% vs. 50.79%
-  for the reference, N50 = 115,849 bp.
-- Annotation: 4,188 predicted coding sequences (CDS), 78 tRNAs, 3 rRNAs,
-  and 2 CRISPR arrays.
+  4,641,652 bp — about 97.6% recovered)
+- Annotation: 4,188 predicted coding sequences (CDS), 77 tRNAs, and 3 rRNAs.
 
 ## Pipeline Details
 SKESA builds and extends the assembly graph across a series of
-progressively longer k-mer values (19 up to 511), then resolves repeat
+progressively longer k-mer values, then resolves repeat
 regions in a separate mate-pair-connection phase that iterates through
 k-mer lengths again. This makes it fast and largely deterministic
 compared to assemblers that rely on randomized graph traversal.
@@ -129,24 +122,6 @@ The `output_data/` entries should report `OK`. The `input_data/` entries
 after the checksums are recorded — those three lines exist for
 record-keeping of exactly what was downloaded, not for later
 verification.
-
-### Reproducibility Notes
-- `fastq-dump` is deterministic, so re-running the pipeline downloads
-  the same read data every time.
-- SKESA and Prokka are run multi-threaded (`--cores 8` / `--cpus 8`) in
-  this configuration for speed. This is mostly deterministic, but
-  running multi-threaded can occasionally change the exact ordering of
-  contigs SKESA outputs (not their content). Running single-threaded
-  (`--cores 1`, `--cpus 1`) removes this variability at the cost of a
-  longer runtime.
-- Prokka stamps its `.gbk`/`.sqn` output files with the current run
-  date (visible in the log as a `tbl2asn` date correction step). This
-  means those specific files would not be byte-identical between runs
-  even on the same machine, although the predicted gene content is the
-  same. This pipeline avoids that issue entirely by deleting those
-  date-stamped files (`.gbk`, `.sqn`, along with the other raw Prokka
-  intermediates) at the end of the run, so only the stable `.gff`,
-  `.txt`, `.faa`, and `.tsv` files are kept.
 
 ## Folder Layout
 ```
