@@ -89,7 +89,7 @@ output_data/
 ```
 
 Results from the completed run:
-- Assembly: 82 contigs
+- Assembly: assembly recovered 4,532,199 bp out of the reference's 4,641,652 bp — about 97.6% of the genome's total length. 82 contigs
 - Annotation: 4,188 predicted coding sequences (CDS), 78 tRNAs, 3 rRNAs,
   and 2 CRISPR arrays.
 
