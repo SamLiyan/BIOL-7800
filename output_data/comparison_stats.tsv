@@ -1,0 +1,3 @@
+file                format  type  num_seqs    sum_len    min_len    avg_len    max_len         Q1         Q2         Q3  sum_gap        N50  N50_num  Q20(%)  Q30(%)  AvgQual  GC(%)
+out/assembly.fasta  FASTA   DNA         82  4,532,199        659   55,270.7    326,951      7,727     31,498     81,928        0    115,849       13       0       0        0  50.73
+data/ref.fa         FASTA   DNA          1  4,641,652  4,641,652  4,641,652  4,641,652  4,641,652  4,641,652  4,641,652        0  4,641,652        1       0       0        0  50.79
