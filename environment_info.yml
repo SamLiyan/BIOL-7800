@@ -1,0 +1,10 @@
+name: assembly-annotation
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - sra-tools=3.1.1
+  - skesa=2.4.0
+  - seqkit=2.8.2
+  - prokka=1.14.6
+  - curl
