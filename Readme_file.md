@@ -74,8 +74,7 @@ The script performs the following steps in order:
 On the machine used for this submission (single-threaded, `--cores 1` /
 `--cpus 1`), the full run took approximately **28 minutes**: SKESA
 assembly took about 21 minutes across its 20 progressive k-mer rounds,
-and Prokka annotation took 7.10 minutes (as reported directly in
-Prokka's own log). Runtime will be shorter on a machine with more cores
+and Prokka annotation took 7.10 minutes. Runtime will be shorter on a machine with more cores
 allocated.
 
 ## Generated Files
