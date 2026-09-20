@@ -128,9 +128,8 @@ verification.
 .
 ├── README.md
 ├── environment_info.yml
-├── run_analysis.sh
+├── main_script.sh
 ├── checksum_values.txt
-├── .gitignore
 ├── work/
 │   └── prokka/
 │       ├── genome.txt
@@ -144,13 +143,3 @@ verification.
     ├── prokka_annotation.gff
     └── prokka_proteins.faa
 ```
-
-`input_data/` is created and used during the run but deleted by the
-script itself once checksums are recorded, so it never persists on
-disk. `input_data/` and `work/` are both excluded from GitHub via
-`.gitignore` regardless, since neither directory needs to be committed:
-`input_data/` no longer exists after the run finishes, and `work/`
-holds only Prokka's raw output, which `run_analysis.sh` regenerates
-automatically from scratch. The results that actually matter for the
-submission live in `output_data/` and are the files whose checksums are
-verified in `checksum_values.txt`.
