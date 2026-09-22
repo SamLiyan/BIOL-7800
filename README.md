@@ -116,12 +116,6 @@ After running the analysis, verify file integrity with:
 ```
 sha256sum -c checksum_values.txt
 ```
-The `output_data/` entries should report `OK`. The `input_data/` entries
-(`ref.fa`, `SRR2589044_1.fastq`, `SRR2589044_2.fastq`) will report
-"No such file or directory" instead, since step 8 deletes that folder
-after the checksums are recorded — those three lines exist for
-record-keeping of exactly what was downloaded, not for later
-verification.
 
 ## Folder Layout
 ```
