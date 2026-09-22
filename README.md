@@ -60,7 +60,7 @@ conda activate assembly-annotation
 ## Execution Steps
 Run the full pipeline with:
 ```
-bash run_analysis.sh
+bash main_script.sh
 ```
 
 The script performs the following steps in order:
